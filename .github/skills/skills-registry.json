@@ -1,0 +1,60 @@
+{
+  "agent": "personal-assistant",
+  "version": "1.0.0",
+  "description": "Personal Assistant Agent with Python and Handwriting Recognition Skills",
+  "skills": [
+    {
+      "name": "handwriting-recognition",
+      "version": "1.0.0",
+      "description": "Recognizes and interprets handwritten text from images",
+      "status": "active",
+      "path": ".github/skills/handwriting-recognition.skill.md",
+      "implementation": "scripts/skills/handwriting_recognition/",
+      "dependencies": ["paddleocr", "opencv-python", "pillow", "numpy"]
+    },
+    {
+      "name": "task-management",
+      "version": "1.0.0",
+      "description": "Manages tasks, todos, schedules, and reminders",
+      "status": "active",
+      "path": ".github/skills/task-management.skill.md",
+      "dependencies": ["schedule", "APScheduler"]
+    },
+    {
+      "name": "code-execution",
+      "version": "1.0.0",
+      "description": "Executes Python code and manages scripts",
+      "status": "active",
+      "path": ".github/skills/code-execution.skill.md",
+      "dependencies": ["python"]
+    },
+    {
+      "name": "information-retrieval",
+      "version": "1.0.0",
+      "description": "Retrieves and processes information from various sources",
+      "status": "active",
+      "path": ".github/skills/information-retrieval.skill.md",
+      "dependencies": ["requests"]
+    },
+    {
+      "name": "data-processing",
+      "version": "1.0.0",
+      "description": "Processes and transforms data in various formats",
+      "status": "active",
+      "path": ".github/skills/data-processing.skill.md",
+      "dependencies": ["pandas", "numpy", "scikit-learn"]
+    }
+  ],
+  "directories": {
+    "skills": "scripts/skills/",
+    "samples": "samples/",
+    "data": "data/",
+    "logs": "logs/",
+    "models": "models/"
+  },
+  "configuration": {
+    "log_level": "INFO",
+    "auto_improve": true,
+    "sample_learning": true
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "skill": "handwriting-recognition",
+  "model": {
+    "primary": "paddleocr",
+    "fallback": "pytesseract",
+    "pretrained_model_path": "./models/handwriting"
+  },
+  "training": {
+    "enabled": true,
+    "sample_path": "./samples/handwriting",
+    "auto_improve": true,
+    "batch_size": 32,
+    "epochs": 50,
+    "learning_rate": 0.001,
+    "validation_split": 0.2
+  },
+  "processing": {
+    "image_preprocessing": true,
+    "grayscale_conversion": true,
+    "threshold_adjustment": true,
+    "dpi_optimization": 300,
+    "denoise": true
+  },
+  "output": {
+    "confidence_threshold": 0.7,
+    "return_confidence": true,
+    "return_bounding_boxes": false,
+    "include_metadata": true
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "./logs/handwriting_recognition.log",
+    "max_bytes": 10485760,
+    "backup_count": 5
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "total_samples": 0,
+  "languages": ["en"],
+  "styles": ["cursive", "print", "mixed"],
+  "last_updated": "2026-03-06",
+  "training_status": "ready",
+  "sample_categories": {
+    "english": 0,
+    "multilingual": 0,
+    "validation": 0
+  },
+  "notes": "Add sample handwritten images to training folders. For each image, create a corresponding .txt file with the ground truth text.",
+  "sample_format": {
+    "english": "./training/english/sample_XXX.jpg + sample_XXX.txt",
+    "multilingual": "./training/multilingual/sample_XXX.jpg + sample_XXX.txt",
+    "validation": "./validation/sample_XXX.jpg (optional annotations)"
+  }
+}
