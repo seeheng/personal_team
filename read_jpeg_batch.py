@@ -13,15 +13,22 @@ os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 EXTRACTION_PROMPT = """
 Extract ONLY the handwritten text from this Delivery Note into a JSON object. 
 Ignore all printed boilerplate text.
+In the description field, the first word is usually 'unit'
 
-Use the following keys:
-* no: The red number at the top right.
-* account_of: The name/address on the 'FOR ACCOUNT OF' line.
-* date_main: The date written at the bottom left.
-* items: An array of objects: 'quantity' and 'description'. Pay close attention to hardware fractions (e.g., 3/8", 1/4", 7/8").
-* per: The text on the 'PER' line.
-* signature_present: True/False.
-* recipient_date: The date next to the signature.
+Use the following keys:Extract ONLY the handwritten text from this Delivery Note into a JSON object. 
+Ignore all printed boilerplate text.
+
+Key Layout Constraints:
+- 'no': The red number at the top right (e.g., "85027").
+- 'account_of': Extract the multi-line name and address after 'FOR ACCOUNT OF'.
+- 'items': An array of objects:'quoatity' and 'description'. 
+    * Note: Thefirst word in handwriting is usually "unit".
+    * Logic: If a line in the table has no quantity, append its text to the 'description' of the previous item.
+    * Dimensions: Ensure all inch symbols (") are properly escaped with a backslash (") within the JSON string values so the output remains valid JSON. Ensure fractions (1/2, 3/4, 3/8, 7/8) have a space after the whole number.
+- 'date_main': The handwritten date at the bottom left (e.g., "3/01/2028").
+- 'per': The vehicle number or reference written on the 'PER' line.
+- 'signature_present': Return true if the 'SIGNATURE OF RECIPIENT' area is signed.
+- 'recipient_date': The date written at the very bottom right.
 
 Return ONLY the raw JSON string.
 """
