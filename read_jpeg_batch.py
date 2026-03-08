@@ -14,17 +14,22 @@ EXTRACTION_PROMPT = """
 Extract ONLY the handwritten text from this Delivery Note into a JSON object. 
 Ignore all printed boilerplate text.
 
-Key Layout Constraints:
-- 'no': The red number at the top right (e.g., "85027").
+"SYSTEM INSTRUCTION: This is a stateless request. Analyze ONLY the pixels in the provided image. Disregard all previous names, dates, and items. If the visual evidence contradicts previous knowledge, follow the visual evidence."
+
+Extraction Rules for Handwritten Fields:
+- 'no': The red number at the top right.
 - 'account_of': Extract the multi-line name and address after 'FOR ACCOUNT OF'.
-- 'items': An array of objects:'quoatity' and 'description'. 
-    * Note: The first word in handwriting is usually "unit", "pcs", "tin", "box", "pallet", "set".
-    * Logic: If a line in the table has no quantity, append its text to the 'description' of the previous item.
-    * Dimensions: Ensure all inch symbols (") are properly escaped with a backslash (") within the JSON string values so the output remains valid JSON. Ensure fractions (1/2, 3/4, 3/8, 7/8) have a space after the whole number.
-- 'date_main': The handwritten date at the bottom left (e.g., "3/01/2028").
-- 'per': The vehicle number or reference written on the 'PER' line.
-- 'signature_present': Return true if the 'SIGNATURE OF RECIPIENT' area is signed.
-- 'recipient_date': The date written at the very bottom right.
+- 'items': An array of objects containing 'quantity' and 'description'.
+    * Unit Recognition: The first handwritten word is the unit. Be highly sensitive to "Tin", "Tins", "Unt" (unit), "Pcs", "Box", "Roll", or "Set". 
+    * Handwriting Note: In these forms, "Tin" often starts with a large, loopy cursive 'T' that may resemble a 'Z' or a checkmark.
+    * Multi-line Logic: If a line in the table has no unit/quantity at the start, append that text to the 'description' of the previous item (e.g., "High Gloss Signal Red" belongs to the Tin of Nippon Platone).
+    * Format: Convert "1 Tin" or "1 Tins" into "1 tin". If the handwriting says "unt", normalize to "unit".
+    * Dimensions: Ensure a space between whole numbers and fractions (e.g., "80 1/4"). Escape all inch symbols (\").
+    *Distinguish between 'pc' (looks like a cursive 'p') and 'tin' (starts with a large cursive flourish). The first item in this specific image (85005) is '1 pc 1/2" Metco Garden Tap'.
+- 'date_main': The handwritten date at the bottom left.
+- 'per': The vehicle/reference number on the 'PER' line (e.g., "WMW 3365I").
+- 'signature_present': true/false based on the recipient box.
+- 'recipient_date': The date/shorthand written at the bottom right.
 
 Return ONLY the raw JSON string.
 """
