@@ -2,16 +2,24 @@ import requests
 import base64
 import argparse
 
-PROMPT = "Extract only the handwritten text from this Delivery Note into a JSON object. The form is from Henry Trading Co., SDN. BHD.. Ignore all printed boilerplate text." \
-"Use the following keys:" \
-"No: The red number at the top right." \
-"account_of: The name and address on the 'FOR ACCOUNT OF' line." \
-"date_main: The date written at the bottom left." \
-"items: An array of objects, each containing 'quantity' and 'description'. Pay close attention to fractions like 3/8'"' or 1/4'"'." \
-"per: The text written on the 'PER' line." \
-"signature_present: True/False." \
-"recipient_date: The date written next to the signature." \
-"If a word is truly illegible, write 'UNCERTAIN' after your best guess. Return ONLY the JSON." 
+PROMPT = """
+Extract ONLY the handwritten text from this Delivery Note into a JSON object. 
+Ignore all printed boilerplate text.
+
+Key Layout Constraints:
+- 'no': The red number at the top right (e.g., "85027").
+- 'account_of': Extract the multi-line name and address after 'FOR ACCOUNT OF'.
+- 'items': An array of objects:'quoatity' and 'description'. 
+    * Note: Thefirst word in handwriting is usually "unit".
+    * Logic: If a line in the table has no quantity, append its text to the 'description' of the previous item.
+    * Dimensions: Ensure all inch symbols (") are properly escaped with a backslash (") within the JSON string values so the output remains valid JSON. Ensure fractions (1/2, 3/4, 3/8, 7/8) have a space after the whole number.
+- 'date_main': The handwritten date at the bottom left (e.g., "3/01/2028").
+- 'per': The vehicle number or reference written on the 'PER' line.
+- 'signature_present': Return true if the 'SIGNATURE OF RECIPIENT' area is signed.
+- 'recipient_date': The date written at the very bottom right.
+
+Return ONLY the raw JSON string.
+"""
 
 def describe_image_ollama(image_path):
     with open(image_path, "rb") as f:
