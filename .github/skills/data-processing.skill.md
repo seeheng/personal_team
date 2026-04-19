@@ -37,6 +37,8 @@ This skill enables the personal assistant agent to:
 - Excel (.xlsx, .xls)
 - Parquet
 - HDF5
+- DTA (Strata's native binary data format)
+- SAV (SPSS data format)
 
 ## Key Methods
 
@@ -64,8 +66,21 @@ This skill enables the personal assistant agent to:
 - `plot_line(data, x_col, y_col)`
 - `generate_report(data, output_path)`
 
+### Ref - DTA foramt
+Key Characteristics of .dta Files:
+Binary Format: Unlike .sav (SPSS) or .csv (text), .dta files are binary, which makes them more compact and faster to read/write.
+
+Stata-Specific: Created and used by Stata statistical software.
+
+Structure:
+
+Contains variable names, labels, value labels, and data
+Stores metadata about the dataset (variable types, formats, etc.)
+Can handle large datasets efficiently
+Version Compatibility: Different versions of Stata may create different .dta versions (e.g., .dta13, .dta14, .dta17). Newer versions can read older ones, but not vice versa.
+
 ---
 
 **Version**: 1.0.0  
 **Status**: Active  
-**Last Updated**: March 6, 2026
+**Last Updated**: Apr 19, 2026
